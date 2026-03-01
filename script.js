@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyDr54ndvffLxLGLPCX4ea95MkPs6OPmoow",
     authDomain: "eid-raffle-draw.firebaseapp.com",
@@ -26,7 +25,7 @@ const adviceList = [
 window.startRoyalSpin = () => {
     const name = document.getElementById('userName').value.trim();
     if (!name) return alert("দয়া করে আপনার নাম লিখুন!");
-    if (localStorage.getItem('eid_26_final_v10')) return alert("আপনি অলরেডি হাদিয়া নিয়েছেন!");
+    if (localStorage.getItem('eid_26_final_vFinal')) return alert("আপনি হাদিয়া নিয়ে নিয়েছেন!");
 
     document.getElementById('input-view').classList.add('hidden');
     document.getElementById('slot-view').classList.remove('hidden');
@@ -38,22 +37,22 @@ window.startRoyalSpin = () => {
     
     reels.forEach((reel, idx) => {
         let html = '';
-        // High-speed 120 items
-        for(let i=0; i<120; i++) html += `<div class="slot-num">${Math.floor(Math.random()*10)}</div>`;
+        for(let i=0; i<150; i++) html += `<div class="slot-num">${Math.floor(Math.random()*10)}</div>`;
         html += `<div class="slot-num">${strAmount[idx]}</div>`;
         reel.innerHTML = html;
 
         setTimeout(() => {
-            // Suspense timing for each reel
-            reel.style.transition = `transform ${6 + (idx*2)}s cubic-bezier(0.1, 0, 0.1, 1)`;
-            reel.style.transform = `translateY(-${120 * 160}px)`;
+            // Sequential Stopping Logic (idx * 2s gap)
+            const duration = 5 + (idx * 2); 
+            reel.style.transition = `transform ${duration}s cubic-bezier(0.1, 0, 0.1, 1)`;
+            reel.style.transform = `translateY(-${150 * 160}px)`;
         }, 100);
     });
 
-    // Reveal final card after 11 seconds for maximum suspense
+    // Final reveal after the last reel stops (9s + buffer)
     setTimeout(() => {
         showFinalResult(name, amount);
-    }, 11000);
+    }, 10000);
 };
 
 function showFinalResult(name, amount) {
@@ -66,24 +65,34 @@ function showFinalResult(name, amount) {
     
     confetti({ particleCount: 250, spread: 100, origin: { y: 0.6 } });
     addDoc(winnersCol, { name, amount, time: new Date() });
-    localStorage.setItem('eid_26_final_v10', 'true');
+    localStorage.setItem('eid_26_final_vFinal', 'true');
 }
 
 window.downloadCard = () => {
-    html2canvas(document.getElementById('gift-card'), { scale: 3 }).then(canvas => {
+    const card = document.getElementById('gift-card');
+    html2canvas(card, { 
+        scale: 3, 
+        backgroundColor: '#011f18',
+        useCORS: true 
+    }).then(canvas => {
         const a = document.createElement('a');
         a.download = `Royal_Eid_Hadiya_2026.png`;
-        a.href = canvas.toDataURL();
+        a.href = canvas.toDataURL("image/png");
         a.click();
     });
 };
 
-window.shareRaffle = () => {
-    const text = `Alhamdulillah! Just received my Royal Eid Hadiya 2026. Get yours here: ${window.location.href}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+window.shareRaffle = async () => {
+    const text = `আলহামদুলিল্লাহ! ঈদ হাদিয়া ২০২৬ থেকে আমি বিশেষ উপহার পেয়েছি। আপনিও দেখুন আপনার কপালে কী আছে: ${window.location.href}`;
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: 'Eid Hadiya', text: text, url: window.location.href });
+        } catch (err) { console.log("Share failed"); }
+    } else {
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+    }
 };
 
-// Real-time Leaderboard with Premium Style
 onSnapshot(query(winnersCol, orderBy("time", "desc"), limit(5)), (snap) => {
     const lb = document.getElementById('leaderboard');
     lb.innerHTML = "";
