@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Royal Eid Hadiya 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Hind+Siliguri:wght@400;600;700&family=Bebas_Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Hind+Siliguri:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -23,12 +23,12 @@
 
         <div id="action-container" class="slot-machine-frame p-4 rounded-[55px] border-[8px] border-yellow-600 bg-gradient-to-b from-yellow-700 via-yellow-400 to-yellow-800 shadow-[0_40px_80px_rgba(0,0,0,0.9)]">
             <div id="input-view" class="bg-[#011f18] p-10 rounded-[45px] border border-yellow-500/10 text-center">
-                <h2 class="text-xl font-semibold mb-6 text-emerald-100">আপনার তথ্য দিয়ে <span class="text-yellow-500">হাদিয়া</span> নিন</h2>
+                <h2 class="text-xl font-semibold mb-6 text-emerald-100">আপনার তথ্য দিয়ে <span class="text-yellow-500 uppercase">হাদিয়া</span> নিন</h2>
                 
-                <input id="userName" type="text" placeholder="আপনার নাম..." 
+                <input id="userName" type="text" placeholder="আপনার নাম লিখুন..." 
                        class="w-full bg-black/40 border-2 border-yellow-500/10 p-5 rounded-2xl mb-4 text-center outline-none focus:border-yellow-400 text-xl font-bold text-yellow-100">
                 
-                <select id="regionSelect" class="w-full bg-black/60 border-2 border-yellow-500/10 p-5 rounded-2xl mb-8 text-center outline-none focus:border-yellow-400 text-lg font-bold text-yellow-400 appearance-none">
+                <select id="regionSelect" class="w-full bg-black/60 border-2 border-yellow-500/20 p-5 rounded-2xl mb-8 text-center outline-none focus:border-yellow-400 text-lg font-bold text-yellow-400 appearance-none shadow-xl">
                     <option value="shuddho">শুদ্ধ ভাষা</option>
                     <option value="dhaka">পুরান ঢাকা (মামা!)</option>
                     <option value="chatgaiya">চিটাগাং (অ্যাঁইগ্যুর টিঁয়া!)</option>
@@ -74,6 +74,11 @@
         </div>
 
         <div id="leaderboard-section" class="mt-4 pb-20">
+            <div class="flex items-center justify-center gap-4 mb-6">
+                <span class="h-[1px] w-12 bg-yellow-900"></span>
+                <h3 class="text-yellow-700 font-bold tracking-[4px] text-[10px] uppercase font-['Cinzel'] italic">Recent Blessings</h3>
+                <span class="h-[1px] w-12 bg-yellow-900"></span>
+            </div>
             <div id="leaderboard" class="space-y-4"></div>
         </div>
     </div>
