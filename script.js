@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+// Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyDr54ndvffLxLGLPCX4ea95MkPs6OPmoow",
     authDomain: "eid-raffle-draw.firebaseapp.com",
@@ -15,43 +16,44 @@ const db = getFirestore(app);
 const winnersCol = collection(db, "winners");
 
 const adviceList = [
-    "রমজানের রোজা আপনার নফসের ওপর বিজয় ঘোষণা করুক। ঈদ হোক নতুন সূচনার প্রতীক।",
-    "এক মাস সিয়াম সাধনা শেষে এই উপহার আপনার জন্য দোয়া ও ভালোবাসার নিদর্শন। ঈদ মোবারক!",
-    "রোজা রাখা শুধু পানাহার ত্যাগ নয়, বরং তাকওয়া অর্জনের পথ। আল্লাহ কবুল করুন।",
-    "ধৈর্যশীলদের জন্য মহান আল্লাহ সুসংবাদ দিয়েছেন। আপনার ধৈর্য ও সিয়াম কবুল হোক।",
-    "সালাত ও সিয়ামের মাধ্যমে আত্মার পবিত্রতা আসে। আল্লাহ সবাইকে সঠিক পথে রাখুন।"
+    "রমজানের রোজা আপনার নফসের ওপর বিজয় ঘোষণা করুক। ঈদ হোক নতুন সূচনার প্রতীক।",
+    "এক মাস সিয়াম সাধনা শেষে এই উপহার আপনার জন্য দোয়া ও ভালোবাসার নিদর্শন। ঈদ মোবারক!",
+    "রোজা রাখা শুধু পানাহার ত্যাগ নয়, বরং তাকওয়া অর্জনের পথ। আল্লাহ কবুল করুন।",
+    "ধৈর্যশীলদের জন্য মহান আল্লাহ সুসংবাদ দিয়েছেন। আপনার ধৈর্য ও সিয়াম কবুল হোক।",
+    "সালাত ও সিয়ামের মাধ্যমে আত্মার পবিত্রতা আসে। আল্লাহ সবাইকে সঠিক পথে রাখুন।"
 ];
 
 window.startRoyalSpin = () => {
     const name = document.getElementById('userName').value.trim();
-    if (!name) return alert("Please enter your name!");
-    if (localStorage.getItem('eid_done_final')) return alert("Already Received!");
+    if (!name) return alert("দয়া করে আপনার নাম লিখুন!");
+    if (localStorage.getItem('eid_26_final_v10')) return alert("আপনি অলরেডি হাদিয়া নিয়েছেন!");
 
     document.getElementById('input-view').classList.add('hidden');
     document.getElementById('slot-view').classList.remove('hidden');
 
-    const amount = [85, 90, 100, 110, 130, 150, 200, 300][Math.floor(Math.random() * 8)];
-    const strAmount = amount.toString().padStart(3, '0'); // Convert 85 to 085
+    const amount = [85, 90, 100, 110, 130, 150, 200, 300, 500][Math.floor(Math.random() * 9)];
+    const strAmount = amount.toString().padStart(3, '0');
 
-    // Initialize Reels with dummy data
     const reels = [document.getElementById('reel1'), document.getElementById('reel2'), document.getElementById('reel3')];
     
     reels.forEach((reel, idx) => {
         let html = '';
-        for(let i=0; i<80; i++) html += `<div class="slot-num">${Math.floor(Math.random()*10)}</div>`;
+        // High-speed 120 items
+        for(let i=0; i<120; i++) html += `<div class="slot-num">${Math.floor(Math.random()*10)}</div>`;
         html += `<div class="slot-num">${strAmount[idx]}</div>`;
         reel.innerHTML = html;
 
-        // Start Spinning
         setTimeout(() => {
-            reel.style.transition = `transform ${4 + idx}s cubic-bezier(0.1, 0, 0.1, 1)`;
-            reel.style.transform = `translateY(-${80 * 150}px)`;
+            // Suspense timing for each reel
+            reel.style.transition = `transform ${6 + (idx*2)}s cubic-bezier(0.1, 0, 0.1, 1)`;
+            reel.style.transform = `translateY(-${120 * 160}px)`;
         }, 100);
     });
 
+    // Reveal final card after 11 seconds for maximum suspense
     setTimeout(() => {
         showFinalResult(name, amount);
-    }, 7000);
+    }, 11000);
 };
 
 function showFinalResult(name, amount) {
@@ -59,29 +61,29 @@ function showFinalResult(name, amount) {
     document.getElementById('result-view').classList.remove('hidden');
     
     document.getElementById('card-name').innerText = name;
-    document.getElementById('card-amount').innerText = amount; // Show only 85
+    document.getElementById('card-amount').innerText = amount;
     document.getElementById('advice-text').innerText = adviceList[Math.floor(Math.random() * adviceList.length)];
     
-    confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
+    confetti({ particleCount: 250, spread: 100, origin: { y: 0.6 } });
     addDoc(winnersCol, { name, amount, time: new Date() });
-    localStorage.setItem('eid_done_final', 'true');
+    localStorage.setItem('eid_26_final_v10', 'true');
 }
 
 window.downloadCard = () => {
     html2canvas(document.getElementById('gift-card'), { scale: 3 }).then(canvas => {
         const a = document.createElement('a');
-        a.download = 'Eid_Hadiya_2026.png';
+        a.download = `Royal_Eid_Hadiya_2026.png`;
         a.href = canvas.toDataURL();
         a.click();
     });
 };
 
 window.shareRaffle = () => {
-    const text = `Received my Eid Hadiya! Check yours here: ${window.location.href}`;
+    const text = `Alhamdulillah! Just received my Royal Eid Hadiya 2026. Get yours here: ${window.location.href}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
 };
 
-// Premium Leaderboard Real-time
+// Real-time Leaderboard with Premium Style
 onSnapshot(query(winnersCol, orderBy("time", "desc"), limit(5)), (snap) => {
     const lb = document.getElementById('leaderboard');
     lb.innerHTML = "";
@@ -89,8 +91,8 @@ onSnapshot(query(winnersCol, orderBy("time", "desc"), limit(5)), (snap) => {
         const d = doc.data();
         lb.innerHTML += `
             <div class="lb-entry">
-                <span class="font-bold text-sm tracking-wide text-emerald-100">${d.name}</span>
-                <span class="text-yellow-500 font-['Bebas_Neue'] text-2xl tracking-tighter">৳ ${d.amount}</span>
+                <span class="font-bold text-sm text-emerald-100 italic">${d.name}</span>
+                <span class="text-yellow-500 font-['Bebas_Neue'] text-3xl">৳ ${d.amount}</span>
             </div>`;
     });
 });
