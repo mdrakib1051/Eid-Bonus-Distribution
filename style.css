@@ -29,7 +29,7 @@ body {
 
 .slot-machine-frame { box-shadow: 0 40px 100px rgba(0,0,0,1); }
 
-/* Premium Card Design (Web & Photo Matching) */
+/* Premium Card Design */
 .premium-card {
     background: radial-gradient(circle at center, #052e21, #01130d) !important;
 }
