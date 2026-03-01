@@ -15,18 +15,19 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const winnersCol = collection(db, "winners");
 
-const adviceList = [
-    "রমজানের রোজা আপনার নফসের ওপর বিজয় ঘোষণা করুক। ঈদ হোক নতুন সূচনার প্রতীক।",
-    "এক মাস সিয়াম সাধনা শেষে এই উপহার আপনার জন্য দোয়া ও ভালোবাসার নিদর্শন। ঈদ মোবারক!",
-    "রোজা রাখা শুধু পানাহার ত্যাগ নয়, বরং তাকওয়া অর্জনের পথ। আল্লাহ কবুল করুন।",
-    "ধৈর্যশীলদের জন্য মহান আল্লাহ সুসংবাদ দিয়েছেন। আপনার ধৈর্য ও সিয়াম কবুল হোক।",
-    "সালাত ও সিয়ামের মাধ্যমে আত্মার পবিত্রতা আসে। আল্লাহ সবাইকে সঠিক পথে রাখুন।"
-];
+// Regional Data Dictionary
+const regionalWishes = {
+    shuddho: { title: "ঈদ মোবারক", suffix: "টাকা মাত্র", advice: "রমজানের রোজা আপনার নফসের ওপর বিজয় ঘোষণা করুক। ঈদ হোক নতুন সূচনার প্রতীক।" },
+    dhaka: { title: "ঈদ মোবারক মামা!", suffix: "ট্যাকা পাইলা!", advice: "মামা, এক মাস রোজা রাখছো, এখন বিরিয়ানি আর বোরহানি দিয়া ঈদ জমাইয়া ফালাইবা!" },
+    chatgaiya: { title: "ঈদ মোবারক অঁনারে!", suffix: "টিঁয়া ফাইলন!", advice: "অঁনার ইফতারি তো খুব ভালা অইয়্যে, অহন এই টিঁয়া লই মেজবানি খাঁন গে!" },
+    noakhali: { title: "ঈদ মোবারক ভাইয়্যা!", suffix: "টিঁয়া পাইছেন!", advice: "হানি না খাই হান্তা ভাত খাইয়েন না, এই টিঁয়া লই কডবেল খাইয়েন!" },
+    sylheti: { title: "ঈদ মোবারক ওউ ভাই!", suffix: "টেকা ফাইলানি!", advice: "খিতা খবর ভাই? রোজা তো ভালা করি রাখছো, অহন এই টেকা দিয়া সিন্নি রাইনদো!" },
+    barisal: { title: "ঈদ মোবারক মোর মনু!", suffix: "ট্যাকা পাইছো!", advice: "ও মনু, রোজা তো সবটি রাখছো দেহি! এই ট্যাকা দিয়া আমতলীর হাটে গিয়া খাসি কিনো!" }
+};
 
 window.startRoyalSpin = () => {
     const name = document.getElementById('userName').value.trim();
     if (!name) return alert("দয়া করে আপনার নাম লিখুন!");
-    if (localStorage.getItem('eid_done_v9')) return alert("আপনি অলরেডি হাদিয়া নিয়ে নিয়েছেন!");
 
     document.getElementById('input-view').classList.add('hidden');
     document.getElementById('slot-view').classList.remove('hidden');
@@ -38,54 +39,49 @@ window.startRoyalSpin = () => {
     
     reels.forEach((reel, idx) => {
         let html = '';
-        // High-speed long list
         for(let i=0; i<120; i++) html += `<div class="slot-num">${Math.floor(Math.random()*10)}</div>`;
         html += `<div class="slot-num">${strAmount[idx]}</div>`;
         reel.innerHTML = html;
 
         setTimeout(() => {
-            // Suspense stopping
             reel.style.transition = `transform ${6 + (idx*2)}s cubic-bezier(0.1, 0, 0.1, 1)`;
             reel.style.transform = `translateY(-${120 * 160}px)`;
         }, 100);
     });
 
-    // Reveal after 10.5 seconds
     setTimeout(() => {
         showFinalResult(name, amount);
     }, 10500);
 };
 
 function showFinalResult(name, amount) {
+    const regionKey = document.getElementById('regionSelect').value;
+    const regionData = regionalWishes[regionKey];
+
     document.getElementById('action-container').classList.add('hidden');
     document.getElementById('result-view').classList.remove('hidden');
     
-    document.getElementById('card-name').innerText = name;
+    // Set Card Content
+    document.getElementById('card-title').innerHTML = `${regionData.title}, <span class="text-yellow-400">${name}</span>!`;
     document.getElementById('card-amount').innerText = amount;
-    document.getElementById('advice-text').innerText = adviceList[Math.floor(Math.random() * adviceList.length)];
+    document.getElementById('amount-suffix').innerText = regionData.suffix;
+    document.getElementById('advice-text').innerText = regionData.advice;
     
     confetti({ particleCount: 250, spread: 100, origin: { y: 0.6 } });
-    addDoc(winnersCol, { name, amount, time: new Date() });
-    localStorage.setItem('eid_done_v9', 'true');
+    addDoc(winnersCol, { name, amount, region: regionKey, time: new Date() });
 }
 
-// Download Photo Card (Fixed: Scale 3x for Gallery quality PNG)
 window.downloadCard = () => {
     const card = document.getElementById('gift-card');
-    
-    // Scale 3 ensures high resolution
     html2canvas(card, { 
         scale: 3, 
         backgroundColor: '#011f18',
         useCORS: true 
     }).then(canvas => {
         const a = document.createElement('a');
-        a.download = `Royal_Eid_Hadiya_Card_${Date.now()}.png`; // Saves as PNG image
+        a.download = `Royal_Eid_Card_${Date.now()}.png`;
         a.href = canvas.toDataURL("image/png");
         a.click();
-        
-        // Mobile browsers usually download this to the Downloads folder, 
-        // which automatically shows up in the Gallery.
     });
 };
 
