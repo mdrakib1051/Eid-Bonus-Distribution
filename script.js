@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+// Firebase Config - Tomar config use koro
 const firebaseConfig = {
     apiKey: "AIzaSyDr54ndvffLxLGLPCX4ea95MkPs6OPmoow",
     authDomain: "eid-raffle-draw.firebaseapp.com",
@@ -25,7 +26,7 @@ const adviceList = [
 window.startRoyalSpin = () => {
     const name = document.getElementById('userName').value.trim();
     if (!name) return alert("দয়া করে আপনার নাম লিখুন!");
-    if (localStorage.getItem('eid_26_final_vFinal')) return alert("আপনি হাদিয়া নিয়ে নিয়েছেন!");
+    if (localStorage.getItem('eid_26_final_vFinal')) return alert("আপনি অলরেডি হাদিয়া নিয়েছেন!");
 
     document.getElementById('input-view').classList.add('hidden');
     document.getElementById('slot-view').classList.remove('hidden');
@@ -37,22 +38,21 @@ window.startRoyalSpin = () => {
     
     reels.forEach((reel, idx) => {
         let html = '';
+        // High-speed long list
         for(let i=0; i<150; i++) html += `<div class="slot-num">${Math.floor(Math.random()*10)}</div>`;
         html += `<div class="slot-num">${strAmount[idx]}</div>`;
         reel.innerHTML = html;
 
         setTimeout(() => {
-            // Sequential Stopping Logic (idx * 2s gap)
-            const duration = 5 + (idx * 2); 
-            reel.style.transition = `transform ${duration}s cubic-bezier(0.1, 0, 0.1, 1)`;
+            reel.style.transition = `transform ${6 + (idx*2)}s cubic-bezier(0.1, 0, 0.1, 1)`;
             reel.style.transform = `translateY(-${150 * 160}px)`;
         }, 100);
     });
 
-    // Final reveal after the last reel stops (9s + buffer)
+    // Reveal after 10.5 seconds
     setTimeout(() => {
         showFinalResult(name, amount);
-    }, 10000);
+    }, 10500);
 };
 
 function showFinalResult(name, amount) {
@@ -68,32 +68,40 @@ function showFinalResult(name, amount) {
     localStorage.setItem('eid_26_final_vFinal', 'true');
 }
 
+// Optimized Photo Export - Fixed White Box Issue
 window.downloadCard = () => {
-    const card = document.getElementById('gift-card');
+    // Select the special class to capture
+    const card = document.querySelector('.canvas-export');
+    
+    // Explicitly hide the amount text briefly if html2canvas renders gradients poorly on capture
+    // (Optional, gradients usually work fine with scale: 3 on modern browsers)
+    
     html2canvas(card, { 
         scale: 3, 
-        backgroundColor: '#011f18',
-        useCORS: true 
+        backgroundColor: '#011f18', // Ensure the base background is dark
+        useCORS: true, // Needed if you load any assets from external domains
+        onclone: (clonedDocument) => {
+            // Optional: You can explicitly find and style elements in the cloned DOM before capture
+            // Cloned amount should already have background-clip applied by Tailwind/CSS
+        }
     }).then(canvas => {
         const a = document.createElement('a');
-        a.download = `Royal_Eid_Hadiya_2026.png`;
+        a.download = `Eid_Gift_Royal_Card_${Date.now()}.png`;
         a.href = canvas.toDataURL("image/png");
         a.click();
     });
 };
 
-window.shareRaffle = async () => {
-    const text = `আলহামদুলিল্লাহ! ঈদ হাদিয়া ২০২৬ থেকে আমি বিশেষ উপহার পেয়েছি। আপনিও দেখুন আপনার কপালে কী আছে: ${window.location.href}`;
+window.shareRaffle = () => {
+    const text = `Alhamdulillah! Just received my Royal Eid Hadiya 2026. Get yours here: ${window.location.href}`;
     if (navigator.share) {
-        try {
-            await navigator.share({ title: 'Eid Hadiya', text: text, url: window.location.href });
-        } catch (err) { console.log("Share failed"); }
+        navigator.share({ title: 'Eid Hadiya', text: text, url: window.location.href });
     } else {
         window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
     }
 };
 
-onSnapshot(query(winnersCol, orderBy("time", "desc"), limit(5)), (snap) => {
+onSnapshot(query(winnersCol, orderBy("time", "desc"), limit(6)), (snap) => {
     const lb = document.getElementById('leaderboard');
     lb.innerHTML = "";
     snap.forEach(doc => {
