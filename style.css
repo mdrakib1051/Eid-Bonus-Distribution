@@ -1,4 +1,7 @@
-body { background: radial-gradient(circle at top, #064e3b, #011f18); touch-action: manipulation; }
+body { 
+    background: radial-gradient(circle at top, #064e3b, #011f18); 
+    touch-action: manipulation; 
+}
 
 /* Slot Machine Styling */
 .slot-column {
@@ -26,7 +29,7 @@ body { background: radial-gradient(circle at top, #064e3b, #011f18); touch-actio
 
 .slot-machine-frame { box-shadow: 0 40px 100px rgba(0,0,0,1); }
 
-/* Premium Card Design (Synced with Web view) */
+/* Premium Card Design */
 .premium-card {
     background: radial-gradient(circle at center, #052e21, #01130d) !important;
 }
@@ -51,7 +54,7 @@ body { background: radial-gradient(circle at top, #064e3b, #011f18); touch-actio
     border: 1px solid rgba(255,255,255,0.03);
 }
 
-/* Animation */
+/* Animations */
 @keyframes fade-in {
     from { opacity: 0; transform: translateY(30px) scale(0.95); }
     to { opacity: 1; transform: translateY(0) scale(1); }
