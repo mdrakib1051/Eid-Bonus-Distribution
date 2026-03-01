@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Royal Eid Hadiya</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -10,55 +10,64 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
-<body class="bg-[#011f18] text-white min-h-screen font-['Hind_Siliguri']">
+<body class="bg-[#011f18] text-white min-h-screen font-['Hind_Siliguri'] flex flex-col items-center justify-start py-6">
 
-    <div class="max-w-md mx-auto px-4 py-8">
-        <div class="text-center mb-10">
-            <h1 class="text-4xl font-bold text-yellow-500 drop-shadow-lg">🌙 ডিজিটাল ঈদ হাদিয়া</h1>
+    <div class="w-full max-w-[92%] mx-auto space-y-6">
+        <div class="text-center">
+            <h1 class="text-4xl font-black text-yellow-500 drop-shadow-[0_2px_10px_rgba(234,179,8,0.4)] mb-1">🌙 ডিজিটাল ঈদ হাদিয়া</h1>
+            <p class="text-emerald-400 text-[11px] tracking-[5px] font-bold uppercase">Royal Ramadan Gift</p>
         </div>
 
-        <div id="action-container" class="slot-machine-frame p-6 rounded-[40px] border-4 border-yellow-600 shadow-2xl bg-gradient-to-b from-yellow-700 via-yellow-500 to-yellow-800">
-            <div id="input-view" class="bg-[#011f18] p-8 rounded-[30px] border border-yellow-400/30">
-                <h2 class="text-2xl font-bold mb-6 text-center text-yellow-400">আপনার নাম দিন</h2>
-                <input id="userName" type="text" placeholder="নাম এখানে লিখুন..." 
-                       class="w-full bg-black/40 border border-yellow-500/50 p-4 rounded-xl mb-6 text-center outline-none focus:ring-2 focus:ring-yellow-400 text-white">
-                <button onclick="startRoyalSpin()" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-black py-4 rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition-all uppercase tracking-tighter">
-                    হাদিয়া সংগ্রহ করুন 🎰
+        <div id="action-container" class="slot-machine-frame p-5 rounded-[45px] border-[6px] border-yellow-600 shadow-2xl bg-gradient-to-b from-yellow-700 via-yellow-400 to-yellow-800">
+            <div id="input-view" class="bg-[#011f18] p-8 rounded-[35px] border border-yellow-400/20 text-center">
+                <h2 class="text-2xl font-bold mb-6 text-yellow-400">আপনার নাম দিন</h2>
+                <input id="userName" type="text" placeholder="এখানে লিখুন..." 
+                       class="w-full bg-black/50 border-2 border-yellow-500/30 p-5 rounded-2xl mb-8 text-center outline-none focus:border-yellow-400 text-xl font-bold">
+                <button onclick="startRoyalSpin()" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-black py-5 rounded-2xl shadow-[0_10px_20px_rgba(0,0,0,0.4)] hover:brightness-110 active:scale-95 transition-all text-xl uppercase italic">
+                    হাদিয়া নিন 🎰
                 </button>
             </div>
 
-            <div id="slot-view" class="hidden bg-black p-4 rounded-2xl border-4 border-yellow-900 shadow-inner overflow-hidden">
-                <div class="slot-window relative h-32 flex justify-center items-center">
+            <div id="slot-view" class="hidden bg-black p-4 rounded-[30px] border-[5px] border-yellow-900 shadow-inner overflow-hidden relative">
+                <div class="slot-window h-40 flex justify-center items-center">
                     <div id="slot-reel" class="slot-reel flex flex-col items-center">
-                        <div class="num text-yellow-500 text-6xl font-['Bebas_Neue'] tracking-widest">৳000</div>
+                        <div class="num text-yellow-500 text-8xl font-['Bebas_Neue'] tracking-widest">৳000</div>
                     </div>
-                    <div class="absolute w-full h-1 bg-red-600/50 top-1/2 -translate-y-1/2"></div>
+                    <div class="absolute w-full h-[3px] bg-red-500/60 top-1/2 -translate-y-1/2 shadow-[0_0_10px_red]"></div>
                 </div>
             </div>
         </div>
 
-        <div id="result-view" class="hidden space-y-6">
-            <div id="gift-card" class="premium-card p-8 rounded-[30px] border-2 border-yellow-500/30 bg-[#022c22] relative">
+        <div id="result-view" class="hidden space-y-8 animate-fade-in">
+            <div id="gift-card" class="premium-card p-10 rounded-[40px] border-2 border-yellow-500/40 bg-[#022c22] relative overflow-hidden">
+                <div class="absolute -top-20 -left-20 w-40 h-40 bg-yellow-500/10 blur-[80px]"></div>
+                
                 <div class="text-center relative z-10">
-                    <h3 class="text-xl font-bold mb-4 text-white">ঈদ মোবারক, <span id="card-name" class="text-yellow-400"></span>!</h3>
-                    <div class="bg-black/40 p-6 rounded-2xl mb-6 border border-yellow-500/20">
-                        <p class="text-[10px] text-yellow-500 uppercase font-bold mb-1">আপনার হাদিয়া</p>
-                        <h4 id="card-amount" class="text-6xl font-['Bebas_Neue'] text-white">৳ 00</h4>
+                    <h3 class="text-2xl font-bold mb-6 text-white italic">ঈদ মোবারক, <span id="card-name" class="text-yellow-400"></span>!</h3>
+                    
+                    <div class="bg-black/40 py-8 rounded-[30px] mb-8 border border-white/5 shadow-inner">
+                        <p class="text-xs text-yellow-500 uppercase font-bold tracking-widest mb-2">Total Gift Received</p>
+                        <h4 id="card-amount" class="text-8xl font-['Bebas_Neue'] text-white drop-shadow-md">৳ 00</h4>
                     </div>
-                    <div class="p-5 bg-emerald-950/60 rounded-xl border-l-4 border-yellow-500 text-left">
-                        <p id="advice-text" class="text-[14px] leading-relaxed text-emerald-50 text-justify">
+
+                    <div class="p-6 bg-emerald-950/80 rounded-2xl border-l-8 border-yellow-500 text-left shadow-lg">
+                        <p id="advice-text" class="text-[15px] leading-relaxed text-emerald-50 text-justify font-medium">
                             </p>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <button onclick="downloadCard()" class="bg-white/5 p-4 rounded-xl text-xs font-bold border border-white/10 uppercase tracking-widest">📸 ফটো সেভ</button>
-                <button onclick="shareRaffle()" class="bg-yellow-600 p-4 rounded-xl text-black text-xs font-bold uppercase tracking-widest">🔗 শেয়ার করুন</button>
+            <div class="grid grid-cols-2 gap-5 px-2">
+                <button onclick="downloadCard()" class="bg-white/5 py-5 rounded-2xl text-[13px] font-black border border-white/10 uppercase tracking-tighter flex flex-col items-center gap-1 shadow-xl">
+                    <span class="text-2xl">📸</span> SAVE PHOTO
+                </button>
+                <button onclick="shareRaffle()" class="bg-yellow-500 py-5 rounded-2xl text-black text-[13px] font-black uppercase tracking-tighter flex flex-col items-center gap-1 shadow-xl">
+                    <span class="text-2xl">🔗</span> SHARE NOW
+                </button>
             </div>
         </div>
 
-        <div id="leaderboard" class="mt-12 space-y-2 opacity-60"></div>
+        <div id="leaderboard" class="mt-4 px-4 py-2 bg-black/20 rounded-full text-center text-[11px] italic opacity-50 flex flex-wrap justify-center gap-x-4"></div>
     </div>
 
     <script type="module" src="script.js"></script>
