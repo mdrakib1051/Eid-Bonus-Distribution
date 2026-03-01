@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Hind+Siliguri:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-[#011f18] text-white min-h-screen font-['Hind_Siliguri'] flex flex-col items-center py-10 overflow-x-hidden">
@@ -31,7 +30,7 @@
                 </button>
             </div>
 
-            <div id="slot-view" class="hidden bg-black p-6 rounded-[35px] border-[4px] border-[#222] overflow-hidden flex justify-center gap-3 relative">
+            <div id="slot-view" class="hidden bg-black p-6 rounded-[35px] border-[4px] border-[#222] overflow-hidden flex justify-center gap-3">
                 <div class="slot-column"><div id="reel1" class="reel"></div></div>
                 <div class="slot-column"><div id="reel2" class="reel"></div></div>
                 <div class="slot-column"><div id="reel3" class="reel"></div></div>
@@ -39,30 +38,26 @@
         </div>
 
         <div id="result-view" class="hidden space-y-10 animate-fade-in">
-            
-            <div id="gift-card" class="premium-card p-12 rounded-[50px] bg-[#022c22] border-2 border-yellow-500/20 relative overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,1)] flex flex-col items-center justify-center text-center">
+            <div class="premium-card p-10 rounded-[50px] bg-[#022c22] border-2 border-yellow-500/20 relative flex flex-col items-center">
+                <h3 class="font-['Cinzel'] text-sm font-black text-yellow-500 tracking-[5px] mb-4 uppercase">Certificate of Hadiya</h3>
+                <h2 class="text-3xl font-bold italic mb-8 text-center leading-tight">ঈদ মোবারক, <span id="card-name" class="text-yellow-400"></span>!</h2>
                 
-                <div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmYWNjMTUiIGZpbGwtb3BhY2l0eT0iMC40Ij48cGF0aCBkPSJNMCAwaDQwdjQwSDBWMHptMjAgMjBoMjB2MjBIMjBWMjB6TTAgMjBoMjB2MjBIMFYyMHoyMCAwaDIwdjIwSDIwVjB6Ii8+PC9nPjwvZz48L3N2Zz4=')]"></div>
+                <div class="w-full bg-black/60 py-10 rounded-[45px] mb-8 border border-yellow-500/10 shadow-inner flex flex-col items-center justify-center">
+                    <p class="font-['Cinzel'] text-[9px] text-yellow-500/50 uppercase tracking-[4px] mb-2 font-bold">Total Amount</p>
+                    <h4 id="card-amount" class="text-[115px] font-['Bebas_Neue'] text-white leading-none">000</h4>
+                    <span class="text-xl font-bold text-yellow-500 mt-4 tracking-[3px]">টাকা মাত্র</span>
+                </div>
 
-                <div class="relative z-10 flex flex-col items-center">
-                    <h3 class="font-['Cinzel'] text-sm font-black text-yellow-500 tracking-[5px] mb-6 uppercase">Royal Certificate</h3>
-                    <h2 class="text-4xl font-bold italic mb-10 text-white leading-tight">ঈদ মোবারক, <span id="card-name" class="text-yellow-400"></span>!</h2>
-                    
-                    <div class="flex flex-col items-center justify-center mb-10">
-                        <p class="font-['Cinzel'] text-[10px] text-yellow-500/70 uppercase tracking-[5px] mb-3">Amount Received</p>
-                        <h4 id="card-amount" class="text-[120px] font-['Bebas_Neue'] leading-none tracking-tighter">000</h4>
-                        <span class="text-2xl font-black text-yellow-500 mt-5 tracking-[4px]">টাকা মাত্র</span>
-                    </div>
-
-                    <div class="p-8 bg-emerald-950/80 rounded-[35px] border-l-[12px] border-yellow-600 shadow-2xl">
-                        <p id="advice-text" class="text-[15px] leading-relaxed text-emerald-50 text-justify font-medium italic">
-                            </p>
-                    </div>
+                <div class="p-7 bg-emerald-950/70 rounded-[30px] border-l-[10px] border-yellow-600">
+                    <p id="advice-text" class="text-[14px] leading-relaxed text-emerald-50 text-justify font-medium italic"></p>
                 </div>
             </div>
 
+            <div id="svg-cards-container" class="hidden">
+                </div>
+
             <div class="grid grid-cols-2 gap-5 px-2 pb-14">
-                <button onclick="downloadCard()" class="bg-white/5 py-5 rounded-2xl text-[12px] font-black border border-white/10 tracking-widest uppercase font-['Cinzel'] text-white shadow-xl flex items-center justify-center gap-2">💾 SAVE PHOTO</button>
+                <button onclick="downloadSvgCard()" class="bg-white/5 py-5 rounded-2xl text-[12px] font-black border border-white/10 tracking-widest uppercase font-['Cinzel'] text-white shadow-xl flex items-center justify-center gap-2">💾 Download Gift Card</button>
                 <button onclick="shareRaffle()" class="bg-yellow-600 py-5 rounded-2xl text-black text-[12px] font-black tracking-widest uppercase font-['Cinzel'] shadow-xl">🔗 SHARE NOW</button>
             </div>
         </div>
