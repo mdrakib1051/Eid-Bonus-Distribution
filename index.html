@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eid Salami Raffle 🌙</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body class="bg-[#022c22] min-h-screen text-white flex flex-col items-center p-4">
+
+    <div class="text-center mt-12 mb-8">
+        <h1 class="text-5xl font-bold text-yellow-400 drop-shadow-glow mb-2">🌙 ঈদ সেলামি ২০২৬</h1>
+        <p class="text-emerald-200 opacity-90 font-medium">আপনার নাম দিয়ে ড্র করুন!</p>
+    </div>
+
+    <div id="setup-box" class="glass-card p-10 w-full max-w-md text-center rounded-[32px] shadow-2xl">
+        <input id="userName" type="text" placeholder="আপনার নাম লিখুন..." 
+               class="w-full p-4 rounded-2xl bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-white mb-6 text-center text-xl font-semibold placeholder:text-white/30">
+        
+        <button onclick="startDraw()" id="drawBtn" 
+                class="w-full bg-gradient-to-r from-yellow-500 to-amber-600 text-[#022c22] font-black py-4 rounded-2xl transition-all transform hover:scale-105 active:scale-95 text-xl shadow-lg">
+            ড্র করুন 🎰
+        </button>
+    </div>
+
+    <div id="result-box" class="hidden glass-card p-12 w-full max-w-md text-center rounded-[32px] animate-float">
+        <h2 class="text-3xl font-bold mb-2">মাশাআল্লাহ্, <span id="displayName" class="text-yellow-300"></span>! 🎉</h2>
+        <p class="text-lg opacity-80 mb-6">আপনার ঈদ সেলামি হলো:</p>
+        <div id="amount-display" class="text-8xl font-black text-white drop-shadow-2xl mb-4">৳ ০</div>
+        <p class="text-sm text-emerald-300 font-medium">লিডারবোর্ডে চেক করুন</p>
+    </div>
+
+    <div class="mt-16 w-full max-w-md mb-24">
+        <div class="flex items-center justify-between mb-8 px-2 border-b border-white/10 pb-4">
+            <h3 class="text-2xl font-bold text-yellow-400 flex items-center gap-2">🏆 সেরা ড্র</h3>
+            <span class="text-xs bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full uppercase tracking-wider">Live</span>
+        </div>
+        <div id="leaderboard" class="space-y-4">
+            <p class="text-center opacity-40 py-10">অপেক্ষা করুন...</p>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
