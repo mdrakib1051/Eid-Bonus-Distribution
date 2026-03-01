@@ -3,11 +3,11 @@ body {
     touch-action: manipulation;
 }
 
-/* 3-Column Casino Slot Style */
+/* Slot Machine Styling */
 .slot-column {
     width: 30%;
     height: 160px;
-    background: linear-gradient(180deg, #000 0%, #0a0a0a 50%, #000 100%);
+    background: linear-gradient(180deg, #000 0%, #111 50%, #000 100%);
     border-radius: 20px;
     overflow: hidden;
     position: relative;
@@ -24,24 +24,23 @@ body {
     font-size: 7rem;
     font-family: 'Bebas Neue', sans-serif;
     color: #facc15;
-    text-shadow: 0 15px 30px rgba(0,0,0,0.9);
+    text-shadow: 0 10px 30px rgba(0,0,0,0.9);
 }
 
 .slot-machine-frame { box-shadow: 0 40px 100px rgba(0,0,0,1); }
 
-/* Premium Card Design - Web & Photo Matching */
-.premium-card, .canvas-export {
-    background: linear-gradient(145deg, #052e21 0%, #01130d 100%) !important;
+/* Premium Card Design (Web & Photo Matching) */
+.premium-card {
+    background: radial-gradient(circle at center, #052e21, #01130d) !important;
 }
 
 #card-amount {
-    text-shadow: 0 10px 40px rgba(0,0,0,0.8);
-    background: linear-gradient(to bottom, #ffffff 60%, #9ca3af 100%);
+    background: linear-gradient(to bottom, #ffffff, #eab308);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 0 10px 40px rgba(0,0,0,0.5);
 }
 
-/* Leaderboard Aesthetic */
 .lb-entry {
     background: rgba(255, 255, 255, 0.02);
     border-right: 4px solid #ca8a04;
@@ -54,9 +53,8 @@ body {
     border: 1px solid rgba(255,255,255,0.03);
 }
 
-/* Animation */
 @keyframes fade-in {
     from { opacity: 0; transform: translateY(30px) scale(0.95); }
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
-.animate-fade-in { animation: fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-fade-in { animation: fade-in 0.8s ease-out forwards; }
