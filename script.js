@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyDr54ndvffLxLGLPCX4ea95MkPs6OPmoow",
     authDomain: "eid-raffle-draw.firebaseapp.com",
@@ -26,9 +25,7 @@ const adviceList = [
 window.startRoyalSpin = () => {
     const name = document.getElementById('userName').value.trim();
     if (!name) return alert("দয়া করে আপনার নাম লিখুন!");
-
-    // --- Validation Temporarily Off ---
-    // if (localStorage.getItem('eid_26_final_vFinal')) return alert("আপনি অলরেডি হাদিয়া নিয়েছেন!");
+    if (localStorage.getItem('eid_26_final_vCleanCard')) return alert("আপনি অলরেডি হাদিয়া নিয়ে নিয়েছেন!");
 
     document.getElementById('input-view').classList.add('hidden');
     document.getElementById('slot-view').classList.remove('hidden');
@@ -40,18 +37,17 @@ window.startRoyalSpin = () => {
     
     reels.forEach((reel, idx) => {
         let html = '';
-        for(let i=0; i<150; i++) html += `<div class="slot-num">${Math.floor(Math.random()*10)}</div>`;
+        for(let i=0; i<120; i++) html += `<div class="slot-num">${Math.floor(Math.random()*10)}</div>`;
         html += `<div class="slot-num">${strAmount[idx]}</div>`;
         reel.innerHTML = html;
 
         setTimeout(() => {
-            // Sequential Stopping (0... 9... 0...)
-            const duration = 5 + (idx * 2); 
-            reel.style.transition = `transform ${duration}s cubic-bezier(0.1, 0, 0.1, 1)`;
-            reel.style.transform = `translateY(-${150 * 160}px)`;
+            reel.style.transition = `transform ${6 + (idx*2)}s cubic-bezier(0.1, 0, 0.1, 1)`;
+            reel.style.transform = `translateY(-${120 * 160}px)`;
         }, 100);
     });
 
+    // Reveal after 10.5 seconds
     setTimeout(() => {
         showFinalResult(name, amount);
     }, 10500);
@@ -66,22 +62,27 @@ function showFinalResult(name, amount) {
     document.getElementById('advice-text').innerText = adviceList[Math.floor(Math.random() * adviceList.length)];
     
     confetti({ particleCount: 250, spread: 100, origin: { y: 0.6 } });
-    
-    // Database update hobe kintu localStorage save off thakbe apatoto
     addDoc(winnersCol, { name, amount, time: new Date() });
+    localStorage.setItem('eid_26_final_vCleanCard', 'true');
 }
 
+// Download Photo Card (Fixed: New Template, Scale 3x for Gallery quality)
 window.downloadCard = () => {
-    const card = document.querySelector('.canvas-export');
+    const card = document.getElementById('gift-card');
+    
+    // Scale 3 ensures high resolution for gallery viewing
     html2canvas(card, { 
         scale: 3, 
-        backgroundColor: '#011f18',
+        backgroundColor: '#011f18', // Ensures base is dark emerald
         useCORS: true 
     }).then(canvas => {
         const a = document.createElement('a');
-        a.download = `Royal_Eid_Hadiya_Card.png`;
+        a.download = `Royal_Eid_Hadiya_Card_${Date.now()}.png`; // Saves as PNG image
         a.href = canvas.toDataURL("image/png");
         a.click();
+        
+        // Mobile browsers usually download this to the Downloads folder, 
+        // which automatically shows up in the Gallery.
     });
 };
 
