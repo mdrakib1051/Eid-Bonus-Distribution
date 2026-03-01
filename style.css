@@ -1,57 +1,62 @@
-body { background: radial-gradient(circle at top, #064e3b, #011f18); }
+body { 
+    background: radial-gradient(circle at top, #064e3b 0%, #011f18 100%); 
+    touch-action: manipulation;
+}
 
-/* 3-Column Slot Machine */
+/* 3-Column Casino Slot Style */
 .slot-column {
-    width: 80px;
-    height: 150px;
-    background: #111;
-    border-radius: 15px;
+    width: 30%;
+    height: 160px;
+    background: linear-gradient(180deg, #000 0%, #0a0a0a 50%, #000 100%);
+    border-radius: 20px;
     overflow: hidden;
     position: relative;
-    border: 2px solid #333;
+    border: 1px solid #222;
 }
 
-.reel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transform: translateY(0);
-}
+.reel { transform: translateY(0); }
 
 .slot-num {
-    height: 150px;
+    height: 160px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 5rem;
+    font-size: 7rem;
     font-family: 'Bebas Neue', sans-serif;
     color: #facc15;
-    text-shadow: 0 0 15px rgba(250, 204, 21, 0.5);
+    text-shadow: 0 15px 30px rgba(0,0,0,0.9);
 }
 
-.slot-machine-frame { box-shadow: 0 30px 70px rgba(0,0,0,0.8); }
+.slot-machine-frame { box-shadow: 0 40px 100px rgba(0,0,0,1); }
 
-.premium-card { background: linear-gradient(145deg, #064e3b, #01130d); }
+/* Premium Card Design */
+.premium-card {
+    background: linear-gradient(145deg, #052e21 0%, #01130d 100%);
+}
 
-/* Result Amount Middle Alignment */
 #card-amount {
-    display: inline-block;
-    vertical-align: middle;
+    text-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    background: linear-gradient(to bottom, #ffffff 60%, #9ca3af 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* Premium Leaderboard Entry */
+/* Leaderboard Aesthetic */
 .lb-entry {
-    background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
-    border-left: 3px solid #eab308;
-    padding: 15px 20px;
-    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border-right: 4px solid #ca8a04;
+    padding: 22px;
+    border-radius: 22px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    animation: slideIn 0.5s ease-out;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.03);
 }
 
-@keyframes slideIn {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
+/* Animation */
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
+.animate-fade-in { animation: fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
