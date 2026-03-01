@@ -22,10 +22,28 @@ const adviceList = [
     "সালাত ও সিয়ামের মাধ্যমে আত্মার পবিত্রতা আসে। আল্লাহ সবাইকে সঠিক পথে রাখুন।"
 ];
 
+// 5 Premium SVG Gift Card Templates (Pre-generated)
+const svgCardsTemplates = [
+    // Template 1: Royal Crown (Gold on Deep Green)
+    `<svg width="500" height="300" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#064e3b;stop-opacity:1"/><stop offset="100%" style="stop-color:#011f18;stop-opacity:1"/></linearGradient><linearGradient id="goldG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#facc15;stop-opacity:1"/><stop offset="50%" style="stop-color:#eab308;stop-opacity:1"/><stop offset="100%" style="stop-color:#facc15;stop-opacity:1"/></linearGradient></defs><rect width="500" height="300" fill="url(#g1)" rx="20" ry="20" stroke="url(#goldG)" stroke-width="5"/><path d="M 250 50 L 275 85 L 315 85 L 290 120 L 305 160 L 250 140 L 195 160 L 210 120 L 185 85 L 225 85 Z" fill="url(#goldG)" transform="translate(-10,-10)"/></svg>`,
+    
+    // Template 2: Islamic Star (Gold on Deep Emerald)
+    `<svg width="500" height="300" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#065f46;stop-opacity:1"/><stop offset="100%" style="stop-color:#022c22;stop-opacity:1"/></linearGradient><linearGradient id="goldG2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#facc15;stop-opacity:1"/><stop offset="100%" style="stop-color:#ca8a04;stop-opacity:1"/></linearGradient></defs><rect width="500" height="300" fill="url(#g2)" rx="25" ry="25" stroke="url(#goldG2)" stroke-width="6"/><path d="M 250 70 L 290 110 L 330 70 L 310 120 L 350 160 L 300 140 L 250 180 L 200 140 L 150 160 L 190 120 Z" fill="url(#goldG2)" transform="translate(10,10)"/></svg>`,
+    
+    // Template 3: Crescent Moon (Gold on Dark Sapphire)
+    `<svg width="500" height="300" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1"/><stop offset="100%" style="stop-color:#111827;stop-opacity:1"/></linearGradient><linearGradient id="goldG3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1"/><stop offset="50%" style="stop-color:#f59e0b;stop-opacity:1"/><stop offset="100%" style="stop-color:#fbbf24;stop-opacity:1"/></linearGradient></defs><rect width="500" height="300" fill="url(#g3)" rx="30" ry="30" stroke="url(#goldG3)" stroke-width="7"/><path d="M 250 150 m -70 0 a 70 70 0 1 0 140 0 a 70 70 0 1 0 -140 0 M 270 150 a 50 50 0 1 1 -100 0 a 50 50 0 1 1 100 0" fill="url(#goldG3)"/></svg>`,
+
+    // Template 4: Geometric Pattern (Silver on Deep Onyx)
+    `<svg width="500" height="300" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg"><defs><rect id="p1" width="50" height="50" fill="none" stroke="#d1d5db" stroke-width="1"/><pattern id="geoP" patternUnits="userSpaceOnUse" width="50" height="50" patternTransform="rotate(45)"><use href="#p1"/></pattern></defs><rect width="500" height="300" fill="#111" rx="15" ry="15"/><rect width="500" height="300" fill="url(#geoP)" rx="15" ry="15"/></svg>`,
+
+    // Template 5: Calligraphy Style (Gold Brush)
+    `<svg width="500" height="300" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg"><rect width="500" height="300" fill="#030712" rx="40" ry="40"/><path d="M 100 100 q 50 -50 100 0 q 50 50 100 0 q 50 -50 100 0" stroke="#facc15" stroke-width="15" fill="none" stroke-linecap="round"/></svg>`
+];
+
 window.startRoyalSpin = () => {
     const name = document.getElementById('userName').value.trim();
     if (!name) return alert("দয়া করে আপনার নাম লিখুন!");
-    if (localStorage.getItem('eid_26_final_vCleanCard')) return alert("আপনি অলরেডি হাদিয়া নিয়ে নিয়েছেন!");
+    if (localStorage.getItem('eid_26_final_vVoucher')) return alert("আপনি অলরেডি হাদিয়া নিয়ে নিয়েছেন!");
 
     document.getElementById('input-view').classList.add('hidden');
     document.getElementById('slot-view').classList.remove('hidden');
@@ -63,27 +81,23 @@ function showFinalResult(name, amount) {
     
     confetti({ particleCount: 250, spread: 100, origin: { y: 0.6 } });
     addDoc(winnersCol, { name, amount, time: new Date() });
-    localStorage.setItem('eid_26_final_vCleanCard', 'true');
+    localStorage.setItem('eid_26_final_vVoucher', 'true');
 }
 
-// Download Photo Card (Fixed: New Template, Scale 3x for Gallery quality)
-window.downloadCard = () => {
-    const card = document.getElementById('gift-card');
+// Download Pre-generated SVG Gift Card
+window.downloadSvgCard = () => {
+    // Choose a random SVG template (Template 1 to 5)
+    const randomTemplateIndex = Math.floor(Math.random() * svgCardsTemplates.length);
+    const svgContent = svgCardsTemplates[randomTemplateIndex];
     
-    // Scale 3 ensures high resolution for gallery viewing
-    html2canvas(card, { 
-        scale: 3, 
-        backgroundColor: '#011f18', // Ensures base is dark emerald
-        useCORS: true 
-    }).then(canvas => {
-        const a = document.createElement('a');
-        a.download = `Royal_Eid_Hadiya_Card_${Date.now()}.png`; // Saves as PNG image
-        a.href = canvas.toDataURL("image/png");
-        a.click();
-        
-        // Mobile browsers usually download this to the Downloads folder, 
-        // which automatically shows up in the Gallery.
-    });
+    // Create a data URI from the SVG content
+    const svgDataUri = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgContent);
+    
+    // Create a temporary link and trigger download
+    const a = document.createElement('a');
+    a.download = `Royal_Gift_Voucher_${Date.now()}.svg`; // Saves as SVG file
+    a.href = svgDataUri;
+    a.click();
 };
 
 window.shareRaffle = () => {
