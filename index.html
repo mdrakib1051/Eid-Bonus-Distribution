@@ -3,71 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Royal Eid Hadiya</title>
+    <title>Royal Eid Hadiya 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
-<body class="bg-[#011f18] text-white min-h-screen font-['Hind_Siliguri'] flex flex-col items-center justify-start py-6">
+<body class="bg-[#011f18] text-white min-h-screen font-['Hind_Siliguri'] py-8">
 
-    <div class="w-full max-w-[92%] mx-auto space-y-6">
+    <div class="w-full max-w-[92%] mx-auto space-y-8">
         <div class="text-center">
-            <h1 class="text-4xl font-black text-yellow-500 drop-shadow-[0_2px_10px_rgba(234,179,8,0.4)] mb-1">🌙 ডিজিটাল ঈদ হাদিয়া</h1>
-            <p class="text-emerald-400 text-[11px] tracking-[5px] font-bold uppercase">Royal Ramadan Gift</p>
+            <h1 class="text-4xl font-black text-yellow-500 drop-shadow-lg mb-1 italic">🌙 ঈদ হাদিয়া ২০২৬</h1>
+            <p class="text-emerald-400 text-[10px] tracking-[6px] font-bold uppercase">The Royal Distribution</p>
         </div>
 
-        <div id="action-container" class="slot-machine-frame p-5 rounded-[45px] border-[6px] border-yellow-600 shadow-2xl bg-gradient-to-b from-yellow-700 via-yellow-400 to-yellow-800">
-            <div id="input-view" class="bg-[#011f18] p-8 rounded-[35px] border border-yellow-400/20 text-center">
-                <h2 class="text-2xl font-bold mb-6 text-yellow-400">আপনার নাম দিন</h2>
-                <input id="userName" type="text" placeholder="এখানে লিখুন..." 
-                       class="w-full bg-black/50 border-2 border-yellow-500/30 p-5 rounded-2xl mb-8 text-center outline-none focus:border-yellow-400 text-xl font-bold">
-                <button onclick="startRoyalSpin()" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-black py-5 rounded-2xl shadow-[0_10px_20px_rgba(0,0,0,0.4)] hover:brightness-110 active:scale-95 transition-all text-xl uppercase italic">
-                    হাদিয়া নিন 🎰
+        <div id="action-container" class="slot-machine-frame p-4 rounded-[50px] border-[8px] border-yellow-600 bg-gradient-to-b from-yellow-700 via-yellow-400 to-yellow-800 shadow-[0_0_50px_rgba(0,0,0,0.6)]">
+            <div id="input-view" class="bg-[#011f18] p-10 rounded-[40px] border border-yellow-500/30 text-center">
+                <input id="userName" type="text" placeholder="আপনার নাম..." 
+                       class="w-full bg-black/50 border-2 border-yellow-500/20 p-5 rounded-2xl mb-8 text-center outline-none focus:border-yellow-400 text-xl text-yellow-100">
+                <button onclick="startRoyalSpin()" class="w-full bg-gradient-to-r from-yellow-500 to-yellow-300 text-black font-black py-5 rounded-2xl shadow-xl active:scale-95 transition-all text-xl italic uppercase">
+                    GET HADIYA 🎰
                 </button>
             </div>
 
-            <div id="slot-view" class="hidden bg-black p-4 rounded-[30px] border-[5px] border-yellow-900 shadow-inner overflow-hidden relative">
-                <div class="slot-window h-40 flex justify-center items-center">
-                    <div id="slot-reel" class="slot-reel flex flex-col items-center">
-                        <div class="num text-yellow-500 text-8xl font-['Bebas_Neue'] tracking-widest">৳000</div>
-                    </div>
-                    <div class="absolute w-full h-[3px] bg-red-500/60 top-1/2 -translate-y-1/2 shadow-[0_0_10px_red]"></div>
-                </div>
+            <div id="slot-view" class="hidden bg-black p-6 rounded-[35px] border-[6px] border-[#3d2b01] overflow-hidden relative flex justify-center gap-2">
+                <div class="slot-column"><div id="reel1" class="reel"></div></div>
+                <div class="slot-column"><div id="reel2" class="reel"></div></div>
+                <div class="slot-column"><div id="reel3" class="reel"></div></div>
+                <div class="absolute w-full h-[4px] bg-red-600/70 top-1/2 -translate-y-1/2 z-20 shadow-[0_0_15px_red]"></div>
             </div>
         </div>
 
-        <div id="result-view" class="hidden space-y-8 animate-fade-in">
-            <div id="gift-card" class="premium-card p-10 rounded-[40px] border-2 border-yellow-500/40 bg-[#022c22] relative overflow-hidden">
-                <div class="absolute -top-20 -left-20 w-40 h-40 bg-yellow-500/10 blur-[80px]"></div>
-                
-                <div class="text-center relative z-10">
-                    <h3 class="text-2xl font-bold mb-6 text-white italic">ঈদ মোবারক, <span id="card-name" class="text-yellow-400"></span>!</h3>
+        <div id="result-view" class="hidden space-y-8">
+            <div id="gift-card" class="premium-card p-8 rounded-[40px] border-2 border-yellow-500/30 bg-[#022c22] relative">
+                <div class="text-center relative z-10 flex flex-col items-center">
+                    <h3 class="text-2xl font-bold mb-6 text-white italic">Eid Mubarak, <span id="card-name" class="text-yellow-400"></span>!</h3>
                     
-                    <div class="bg-black/40 py-8 rounded-[30px] mb-8 border border-white/5 shadow-inner">
-                        <p class="text-xs text-yellow-500 uppercase font-bold tracking-widest mb-2">Total Gift Received</p>
-                        <h4 id="card-amount" class="text-8xl font-['Bebas_Neue'] text-white drop-shadow-md">৳ 00</h4>
+                    <div class="w-full bg-black/40 py-10 rounded-[35px] mb-8 border border-white/10 flex items-center justify-center">
+                        <h4 id="card-amount" class="text-8xl font-['Bebas_Neue'] text-white leading-none">85</h4>
+                        <span class="text-3xl font-bold text-yellow-500 ml-2">৳</span>
                     </div>
 
-                    <div class="p-6 bg-emerald-950/80 rounded-2xl border-l-8 border-yellow-500 text-left shadow-lg">
-                        <p id="advice-text" class="text-[15px] leading-relaxed text-emerald-50 text-justify font-medium">
+                    <div class="p-6 bg-emerald-950/80 rounded-2xl border-l-8 border-yellow-500 shadow-xl">
+                        <p id="advice-text" class="text-[15px] leading-relaxed text-emerald-50 text-justify">
                             </p>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-5 px-2">
-                <button onclick="downloadCard()" class="bg-white/5 py-5 rounded-2xl text-[13px] font-black border border-white/10 uppercase tracking-tighter flex flex-col items-center gap-1 shadow-xl">
-                    <span class="text-2xl">📸</span> SAVE PHOTO
-                </button>
-                <button onclick="shareRaffle()" class="bg-yellow-500 py-5 rounded-2xl text-black text-[13px] font-black uppercase tracking-tighter flex flex-col items-center gap-1 shadow-xl">
-                    <span class="text-2xl">🔗</span> SHARE NOW
-                </button>
+            <div class="grid grid-cols-2 gap-4 px-2">
+                <button onclick="downloadCard()" class="bg-white/5 py-5 rounded-2xl text-xs font-black border border-white/10 tracking-widest uppercase">💾 Save Photo</button>
+                <button onclick="shareRaffle()" class="bg-yellow-600 py-5 rounded-2xl text-black text-xs font-black tracking-widest uppercase">🔗 Share Now</button>
             </div>
         </div>
 
-        <div id="leaderboard" class="mt-4 px-4 py-2 bg-black/20 rounded-full text-center text-[11px] italic opacity-50 flex flex-wrap justify-center gap-x-4"></div>
+        <div class="leaderboard-container mt-10">
+            <h3 class="text-yellow-500 font-bold mb-4 text-center tracking-[4px] text-xs uppercase italic">Recent Distributions</h3>
+            <div id="leaderboard" class="space-y-3">
+                </div>
+        </div>
     </div>
 
     <script type="module" src="script.js"></script>
