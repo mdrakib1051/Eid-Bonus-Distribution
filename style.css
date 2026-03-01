@@ -1,71 +1,31 @@
-body {
-    background: radial-gradient(circle at top, #064e3b, #022c22);
-}
+body { background: radial-gradient(circle at top, #064e3b, #011f18); }
 
 .glass-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(15px);
 }
 
-/* Envelope Animation */
-.envelope-wrapper {
-    position: relative;
-    width: 200px;
-    height: 150px;
-    background: #b91c1c; /* Deep Red Kham */
-    border-radius: 0 0 10px 10px;
-    margin-top: 50px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+.premium-gift-card {
+    background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 }
 
-.envelope-top {
-    position: absolute;
-    top: 0; width: 0; height: 0;
-    border-left: 100px solid transparent;
-    border-right: 100px solid transparent;
-    border-top: 80px solid #dc2626;
-    transform-origin: top;
-    transition: transform 0.6s 0.3s;
-    z-index: 3;
-}
-
-.envelope-body {
-    position: absolute;
-    bottom: 0; width: 200px; height: 100px;
-    background: #991b1b;
-    z-index: 2;
-    border-radius: 0 0 10px 10px;
-}
-
-.money-card {
-    position: absolute;
-    bottom: 10px; left: 10px;
-    width: 180px; height: 100px;
-    background: #f0fdf4; /* Taka Color */
-    border: 2px solid #166534;
-    border-radius: 5px;
+.slot-container {
+    height: 120px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 1;
-    transition: transform 0.8s 0.8s;
+    overflow: hidden;
+    background: rgba(0,0,0,0.4);
+    border-radius: 20px;
+    border: 1px solid rgba(250, 204, 21, 0.3);
 }
 
-/* Open State */
-.open .envelope-top {
-    transform: rotateX(180deg);
+.winner-row {
+    animation: fadeInUp 0.5s ease-out forwards;
 }
 
-.open .money-card {
-    transform: translateY(-100px);
-}
-
-.winner-entry {
-    animation: slideIn 0.5s ease-out;
-}
-
-@keyframes slideIn {
-    from { opacity: 0; transform: translateY(10px); }
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
 }
