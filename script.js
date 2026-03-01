@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Tomar config boshao
 const firebaseConfig = {
     apiKey: "AIzaSyDr54ndvffLxLGLPCX4ea95MkPs6OPmoow",
     authDomain: "eid-raffle-draw.firebaseapp.com",
@@ -16,66 +15,78 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const winnersCol = collection(db, "winners");
 
-const prizes = [
-    { amt: 85, w: 30 }, { amt: 90, w: 30 }, { amt: 100, w: 25 }, 
-    { amt: 110, w: 20 }, { amt: 130, w: 15 }, { amt: 150, w: 10 },
-    { amt: 180, w: 5 }, { amt: 200, w: 3 }, { amt: 230, w: 2 }, { amt: 300, w: 1 }
-];
-
-function getWeightedPrize() {
-    let pool = [];
-    prizes.forEach(p => { for(let i=0; i<p.w; i++) pool.push(p.amt); });
-    return pool[Math.floor(Math.random() * pool.length)];
-}
-
-window.startRaffle = async () => {
+window.startSalamiRoll = () => {
     const name = document.getElementById('userName').value.trim();
-    if (!name) return alert("দয়া করে নাম লিখুন!");
+    if (!name) return alert("অনুগ্রহ করে আপনার নামটি লিখুন!");
+    if (localStorage.getItem('eid_26_hadiya')) return alert("আপনি একবার হাদিয়া গ্রহণ করেছেন! ঈদ মোবারক!");
 
-    if (localStorage.getItem('eid_2026_done')) {
-        return alert("আপনি একবার সেলামি পেয়েছেন! ঈদ মোবারক!");
-    }
+    document.getElementById('input-view').classList.add('hidden');
+    document.getElementById('slot-view').classList.remove('hidden');
 
-    // UI Change
-    document.getElementById('setup-box').classList.add('hidden');
-    document.getElementById('envelope-area').classList.remove('hidden');
+    const slotInner = document.getElementById('slot-inner');
+    const prizes = [85, 90, 100, 110, 130, 150, 200, 250, 300];
+    const finalPrize = prizes[Math.floor(Math.random() * prizes.length)];
     
-    const finalPrize = getWeightedPrize();
-    
-    // Animation trigger
-    setTimeout(() => {
-        document.getElementById('envelope').classList.add('open');
-        document.getElementById('final-amount').innerText = "৳ " + finalPrize;
-        
-        setTimeout(() => {
-            document.getElementById('winner-name').innerText = name;
-            document.getElementById('winner-text').style.opacity = "1";
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-            
-            // Save to Firebase
-            addDoc(winnersCol, { name, amount: finalPrize, createdAt: new Date() });
-            localStorage.setItem('eid_2026_done', 'true');
-        }, 1000);
-    }, 500);
+    // Slot rolling for 7 seconds (Premium feel)
+    let startTime = Date.now();
+    let duration = 7000; 
+
+    let timer = setInterval(() => {
+        let elapsed = Date.now() - startTime;
+        if (elapsed >= duration) {
+            clearInterval(timer);
+            showGiftCard(name, finalPrize);
+        } else {
+            slotInner.innerText = "৳ " + Math.floor(Math.random() * 500);
+        }
+    }, 70);
 };
 
-// Leaderboard listener
-const q = query(winnersCol, orderBy("createdAt", "desc"), limit(8));
-onSnapshot(q, (snapshot) => {
-    const list = document.getElementById('leaderboard');
-    list.innerHTML = "";
-    snapshot.forEach(doc => {
-        const data = doc.data();
-        list.innerHTML += `
-            <div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 winner-entry">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-yellow-500/20 text-yellow-500 flex items-center justify-center font-bold">
-                        ${data.name.charAt(0).toUpperCase()}
-                    </div>
-                    <span class="font-medium tracking-wide">${data.name}</span>
-                </div>
-                <span class="text-yellow-400 font-bold text-lg">৳${data.amount}</span>
-            </div>
-        `;
+function showGiftCard(name, amount) {
+    document.getElementById('action-container').classList.add('hidden');
+    document.getElementById('result-view').classList.remove('hidden');
+    
+    document.getElementById('card-name').innerText = name;
+    document.getElementById('card-amount').innerText = "৳ " + amount;
+    
+    confetti({ particleCount: 200, spread: 90, origin: { y: 0.6 }, colors: ['#fbbf24', '#ffffff', '#10b981'] });
+
+    // Firebase Save
+    addDoc(winnersCol, { name, amount, time: new Date() });
+    localStorage.setItem('eid_26_hadiya', 'true');
+}
+
+// Card Download Feature
+window.downloadCard = () => {
+    const card = document.getElementById('gift-card');
+    html2canvas(card, { backgroundColor: '#022c22' }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `Eid_Gift_Card_${Date.now()}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+    });
+};
+
+// Social Share Feature
+window.shareRaffle = () => {
+    const shareText = `আলহামদুলিল্লাহ! আমি ঈদ সেলামি ২০২৬ থেকে একটি চমৎকার হাদিয়া পেয়েছি। আপনিও দোয়া ও হাদিয়া গ্রহণ করতে পারেন এই লিঙ্কে: ${window.location.href}`;
+    if (navigator.share) {
+        navigator.share({ title: 'Eid Hadiya 2026', text: shareText, url: window.location.href });
+    } else {
+        window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
+    }
+};
+
+// Real-time Leaderboard
+onSnapshot(query(winnersCol, orderBy("time", "desc"), limit(6)), (snap) => {
+    const lb = document.getElementById('leaderboard');
+    lb.innerHTML = "";
+    snap.forEach(doc => {
+        const d = doc.data();
+        lb.innerHTML += `
+            <div class="flex justify-between items-center p-4 bg-white/5 rounded-2xl border border-white/5 winner-row">
+                <span class="font-bold opacity-80 italic tracking-wide">${d.name}</span>
+                <span class="text-yellow-500 font-black">৳ ${d.amount}</span>
+            </div>`;
     });
 });
