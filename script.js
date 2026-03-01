@@ -15,31 +15,42 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const winnersCol = collection(db, "winners");
 
-window.startSalamiRoll = () => {
+window.startRoyalSpin = () => {
     const name = document.getElementById('userName').value.trim();
     if (!name) return alert("অনুগ্রহ করে আপনার নামটি লিখুন!");
-    if (localStorage.getItem('eid_26_hadiya')) return alert("আপনি একবার হাদিয়া গ্রহণ করেছেন! ঈদ মোবারক!");
+    if (localStorage.getItem('eid_26_final')) return alert("আপনি অলরেডি হাদিয়া নিয়েছেন!");
 
     document.getElementById('input-view').classList.add('hidden');
     document.getElementById('slot-view').classList.remove('hidden');
 
-    const slotInner = document.getElementById('slot-inner');
-    const prizes = [85, 90, 100, 110, 130, 150, 200, 250, 300];
+    const reel = document.getElementById('slot-reel');
+    const prizes = [85, 90, 100, 110, 130, 150, 200, 250, 300, 500];
     const finalPrize = prizes[Math.floor(Math.random() * prizes.length)];
     
-    // Slot rolling for 7 seconds (Premium feel)
-    let startTime = Date.now();
-    let duration = 7000; 
+    // Create many random numbers for spinning effect
+    let reelHTML = '';
+    for(let i=0; i<50; i++) {
+        reelHTML += `<div class="num">৳${Math.floor(Math.random() * 900) + 100}</div>`;
+    }
+    reelHTML += `<div class="num" id="final-stop">৳${finalPrize}</div>`;
+    reel.innerHTML = reelHTML;
 
-    let timer = setInterval(() => {
-        let elapsed = Date.now() - startTime;
-        if (elapsed >= duration) {
-            clearInterval(timer);
+    // Apply Blur and Start Animation
+    reel.classList.add('spinning');
+    
+    // Move the reel
+    setTimeout(() => {
+        const stopPosition = (50 * 120); // Each .num is 120px high
+        reel.style.transform = `translateY(-${stopPosition}px)`;
+    }, 100);
+
+    // After 7 seconds, stop blur and show result
+    setTimeout(() => {
+        reel.classList.remove('spinning');
+        setTimeout(() => {
             showGiftCard(name, finalPrize);
-        } else {
-            slotInner.innerText = "৳ " + Math.floor(Math.random() * 500);
-        }
-    }, 70);
+        }, 800);
+    }, 6500); 
 };
 
 function showGiftCard(name, amount) {
@@ -49,44 +60,42 @@ function showGiftCard(name, amount) {
     document.getElementById('card-name').innerText = name;
     document.getElementById('card-amount').innerText = "৳ " + amount;
     
-    confetti({ particleCount: 200, spread: 90, origin: { y: 0.6 }, colors: ['#fbbf24', '#ffffff', '#10b981'] });
+    confetti({ 
+        particleCount: 250, 
+        spread: 100, 
+        origin: { y: 0.5 }, 
+        colors: ['#FFD700', '#FFFFFF', '#059669'],
+        ticks: 300
+    });
 
-    // Firebase Save
     addDoc(winnersCol, { name, amount, time: new Date() });
-    localStorage.setItem('eid_26_hadiya', 'true');
+    localStorage.setItem('eid_26_final', 'true');
 }
 
-// Card Download Feature
 window.downloadCard = () => {
     const card = document.getElementById('gift-card');
-    html2canvas(card, { backgroundColor: '#022c22' }).then(canvas => {
+    html2canvas(card, { scale: 3 }).then(canvas => {
         const link = document.createElement('a');
-        link.download = `Eid_Gift_Card_${Date.now()}.png`;
-        link.href = canvas.toDataURL("image/png");
+        link.download = `Royal_Hadiya_${name}.png`;
+        link.href = canvas.toDataURL();
         link.click();
     });
 };
 
-// Social Share Feature
 window.shareRaffle = () => {
-    const shareText = `আলহামদুলিল্লাহ! আমি ঈদ সেলামি ২০২৬ থেকে একটি চমৎকার হাদিয়া পেয়েছি। আপনিও দোয়া ও হাদিয়া গ্রহণ করতে পারেন এই লিঙ্কে: ${window.location.href}`;
-    if (navigator.share) {
-        navigator.share({ title: 'Eid Hadiya 2026', text: shareText, url: window.location.href });
-    } else {
-        window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
-    }
+    const text = `আলহামদুলিল্লাহ! ঈদ সেলামি ২০২৬ থেকে আমি বিশেষ হাদিয়া পেয়েছি। ড্র করতে ভিজিট করুন: ${window.location.href}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
 };
 
-// Real-time Leaderboard
-onSnapshot(query(winnersCol, orderBy("time", "desc"), limit(6)), (snap) => {
+onSnapshot(query(winnersCol, orderBy("time", "desc"), limit(5)), (snap) => {
     const lb = document.getElementById('leaderboard');
     lb.innerHTML = "";
     snap.forEach(doc => {
         const d = doc.data();
         lb.innerHTML += `
-            <div class="flex justify-between items-center p-4 bg-white/5 rounded-2xl border border-white/5 winner-row">
-                <span class="font-bold opacity-80 italic tracking-wide">${d.name}</span>
-                <span class="text-yellow-500 font-black">৳ ${d.amount}</span>
+            <div class="flex justify-between items-center p-4 bg-white/5 rounded-2xl border border-white/5 opacity-80">
+                <span class="font-bold italic text-sm text-emerald-100">${d.name}</span>
+                <span class="text-yellow-500 font-['Bebas_Neue'] text-xl tracking-wider">৳ ${d.amount}</span>
             </div>`;
     });
 });
